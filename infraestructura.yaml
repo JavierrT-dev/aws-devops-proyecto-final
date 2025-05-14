@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Plantilla de prueba para EC2 y S3 con LabRole
+
+Resources:
+
+  MiInstanciaEC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c2b8ca1dad447f8a  # Amazon Linux 2 para us-east-1
+      IamInstanceProfile: LabInstanceProfile
+      SecurityGroups:
+        - !Ref MiGrupoSeguridad
+      Tags:
+        - Key: Name
+          Value: MiInstanciaDevOps
+
+  MiGrupoSeguridad:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Acceso HTTP y SSH
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  MiBucketS3:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: mi-bucket-luis-9352
+
+
